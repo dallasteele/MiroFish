@@ -32,8 +32,12 @@ class Config:
     LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.openai.com/v1')
     LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-4o-mini')
     
-    # Zep配置
+    # Zep配置 (optional when USE_GRAPHITI=true)
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')
+
+    # Graphiti / FalkorDB配置 (local knowledge graph backend)
+    USE_GRAPHITI = os.environ.get('USE_GRAPHITI', 'false').lower() == 'true'
+    FALKORDB_URI = os.environ.get('FALKORDB_URI', 'bolt://localhost:6380')
     
     # 文件上传配置
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB
@@ -69,7 +73,8 @@ class Config:
         errors = []
         if not cls.LLM_API_KEY:
             errors.append("LLM_API_KEY 未配置")
-        if not cls.ZEP_API_KEY:
-            errors.append("ZEP_API_KEY 未配置")
+        # ZEP_API_KEY is optional when Graphiti local backend is active
+        if not cls.USE_GRAPHITI and not cls.ZEP_API_KEY:
+            errors.append("ZEP_API_KEY 未配置 (set USE_GRAPHITI=true to use local Graphiti instead)")
         return errors
 
