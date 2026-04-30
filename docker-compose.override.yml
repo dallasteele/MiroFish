@@ -10,6 +10,7 @@ services:
       - "5001:5001"   # Backend API (no conflict)
     restart: unless-stopped
     volumes:
+      - ./backend:/app/backend
       - ./backend/uploads:/app/backend/uploads
       - ./data:/app/data
     extra_hosts:
