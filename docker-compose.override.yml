@@ -1,0 +1,16 @@
+services:
+  mirofish:
+    image: ghcr.io/666ghj/mirofish:latest
+    container_name: mirofish
+    command: ["sh", "-c", "cd /app/backend && uv run python run.py"]
+    env_file:
+      - .env
+    ports:
+      - "3100:3000"   # Remapped: avoid HAL Console conflict on 3000
+      - "5001:5001"   # Backend API (no conflict)
+    restart: unless-stopped
+    volumes:
+      - ./backend/uploads:/app/backend/uploads
+      - ./data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Access host Ollama
