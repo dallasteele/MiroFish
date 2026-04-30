@@ -12,6 +12,7 @@ services:
     volumes:
       - ./backend:/app/backend
       - ./backend/uploads:/app/backend/uploads
+      - ./locales:/app/locales
       - ./data:/app/data
     extra_hosts:
       - "host.docker.internal:host-gateway"  # Access host Ollama
